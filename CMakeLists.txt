@@ -26,7 +26,10 @@ if (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND)
 	add_subdirectory(viewer)
 endif()
 
-add_subdirectory(python)
+if (NOT WIN32)
+    add_subdirectory(python)
+endif()
+
 add_subdirectory(tests)
 add_subdirectory(examples)
 
