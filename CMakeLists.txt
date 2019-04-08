@@ -26,8 +26,12 @@ if (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND)
 	add_subdirectory(viewer)
 endif()
 
-add_subdirectory(tests)
-add_subdirectory(examples)
+if(ENKI_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
+if(ENKI_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
 # Documentation
 find_package(Doxygen)
