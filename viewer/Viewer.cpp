@@ -219,7 +219,7 @@ namespace Enki
 		world->disconnectExternalObjectsUserData();
 		if (isValid())
 		{
-			deleteTexture(helpWidget);
+            /*deleteTexture(helpWidget);
 			deleteTexture(centerWidget);
 			deleteTexture(selectionTexture);
 			glDeleteLists(worldList, 1);
@@ -227,6 +227,7 @@ namespace Enki
 			deleteTexture (wallTexture);
 			if (world->hasGroundTexture())
 				glDeleteTextures(1, &worldGroundTexture);
+           */
 		}
 		
 		ManagedObjectsMapIterator i(managedObjects);
