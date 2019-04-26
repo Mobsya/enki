@@ -57,10 +57,12 @@ namespace Enki
 	
 	void MarxbotModel::cleanup(ViewerWidget* viewer)
 	{
-		for (int i = 0; i < textures.size(); i++)
+		/*
+        for (int i = 0; i < textures.size(); i++)
 			viewer->deleteTexture(textures[i]);
 		for (int i = 0; i < lists.size(); i++)
 			glDeleteLists(lists[i], 1);
+         */
 	}
 	
 	void MarxbotModel::draw(PhysicalObject* object) const
