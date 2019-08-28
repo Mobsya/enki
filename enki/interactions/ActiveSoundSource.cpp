@@ -7,8 +7,8 @@
     Copyright (C) 2006-2008 Laboratory of Robotics Systems, EPFL, Lausanne
     See AUTHORS for details
 
-    This program is free software; the authors of any publication 
-    arising from research using this software are asked to add the 
+    This program is free software; the authors of any publication
+    arising from research using this software are asked to add the
     following reference:
     Enki - a fast 2D robot simulator
     http://home.gna.org/enki
@@ -38,101 +38,78 @@
 #include <assert.h>
 
 /*!	\file ActiveSoundSource.cpp
-	\brief Implementation of sound emitter interaction
+    \brief Implementation of sound emitter interaction
 */
 
-namespace Enki
-{
-	ActiveSoundSource::ActiveSoundSource(Robot *owner, double r, unsigned channels)
-	{
-		this->r = r;
-		this->owner = owner;
-	
-		noOfChannels = channels;
-	
-		pitch = new double[channels];
-		assert(pitch);
-		
-		for (size_t i=0; i<channels; i++)
-			pitch[i] = 0.0;
-	
-		enableFlag = false;
-		elapsedTime = 0.0;
-	
-		activityTime = 5.0;
-	}
-	
-	ActiveSoundSource::~ActiveSoundSource()
-	{
-		delete[] pitch;
-	}
+namespace Enki {
+ActiveSoundSource::ActiveSoundSource(Robot* owner, double r, unsigned channels) {
+    this->r = r;
+    this->owner = owner;
 
-	void ActiveSoundSource::setSoundRange(double range)
-	{
-		this->r = range;
-	}
-		
-	void ActiveSoundSource::setSound(unsigned channel, double signal)
-	{
-		if (channel < noOfChannels)
-			pitch[channel] = signal;
-	}
-		
-	void ActiveSoundSource::realisticSetSound(unsigned channel, double signal)
-	{
-		double variance = 1;
-		//double gaussian;
+    noOfChannels = channels;
 
-		if (channel < noOfChannels)
-		{
-			/*
-			pitch[channel] = signal;
-			for (int i=1; i<=2; i++) {
-				gaussian = exp(-(i*i)/(2*variance*variance));
-				if (channel != 0 && (channel != 1 || i != 2)) 
-					pitch[channel-i] = gaussian*signal;
-				if (channel+i < noOfChannels) pitch[channel+i] = gaussian*signal;
-			}
-			*/
-			int c = (int)channel + round(gaussianRand(0, variance));
-			if (c < 0)
-				c = 0;
-			if (c >= noOfChannels)
-				c = noOfChannels-1;
-			channel = c;
-			pitch[channel] = signal;
-		}
-	}
+    pitch = new double[channels];
+    assert(pitch);
 
-	double ActiveSoundSource::getSound(unsigned channel)
-	{
-		if (channel < noOfChannels)
-			return (pitch[channel]);
-		else
-			return -1;
-	}
+    for(size_t i = 0; i < channels; i++)
+        pitch[i] = 0.0;
 
-	
-	double ActiveSoundSource::getMaxSound(int* channel)
-	{
-		double maxPitch = 0;
-		
-		for (unsigned i=0; i<noOfChannels; i++)
-			if (pitch[i] > maxPitch)
-			{
-				maxPitch = pitch[i];
-				*channel = i;
-			}
+    enableFlag = false;
+    elapsedTime = 0.0;
 
-		if (maxPitch)
-			return maxPitch; 
-		else
-			return -1;
-	}
-	
-	ActiveSoundObject::ActiveSoundObject(Robot *owner, double actionRange, unsigned channels) :
-		speaker(owner, actionRange, channels)
-	{
-	
-	}
+    activityTime = 5.0;
 }
+
+ActiveSoundSource::~ActiveSoundSource() {
+    delete[] pitch;
+}
+
+void ActiveSoundSource::setSoundRange(double range) {
+    this->r = range;
+}
+
+void ActiveSoundSource::setSound(unsigned channel, double signal) {
+    if(channel < noOfChannels)
+        pitch[channel] = signal;
+}
+
+void ActiveSoundSource::realisticSetSound(unsigned channel, double signal) {
+    double variance = 1;
+
+    if(channel < noOfChannels) {
+        int c = (int)channel + round(gaussianRand(0, variance));
+        if(c < 0)
+            c = 0;
+        if(unsigned(c) >= noOfChannels)
+            c = noOfChannels - 1;
+        channel = c;
+        pitch[channel] = signal;
+    }
+}
+
+double ActiveSoundSource::getSound(unsigned channel) {
+    if(channel < noOfChannels)
+        return (pitch[channel]);
+    else
+        return -1;
+}
+
+
+double ActiveSoundSource::getMaxSound(int* channel) {
+    double maxPitch = 0;
+
+    for(unsigned i = 0; i < noOfChannels; i++)
+        if(pitch[i] > maxPitch) {
+            maxPitch = pitch[i];
+            *channel = i;
+        }
+
+    if(maxPitch)
+        return maxPitch;
+    else
+        return -1;
+}
+
+ActiveSoundObject::ActiveSoundObject(Robot* owner, double actionRange, unsigned channels)
+    : speaker(owner, actionRange, channels) {}
+}  // namespace Enki

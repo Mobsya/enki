@@ -7,8 +7,8 @@
     Copyright (C) 2006-2008 Laboratory of Robotics Systems, EPFL, Lausanne
     See AUTHORS for details
 
-    This program is free software; the authors of any publication 
-    arising from research using this software are asked to add the 
+    This program is free software; the authors of any publication
+    arising from research using this software are asked to add the
     following reference:
     Enki - a fast 2D robot simulator
     http://home.gna.org/enki
@@ -38,96 +38,78 @@
 #include <limits.h>
 
 /*!	\file SbotObject.cpp
-	\brief Implementation of the Sbot Active Object
+    \brief Implementation of the Sbot Active Object
 */
-namespace Enki
-{
-	SbotFeeding::SbotFeeding(double r, Robot *owner)
-	{
-		this->r = r;
-		this->owner = owner;
-		
-		activeColor = Color(255, 0, 0);
-		inactiveColor = Color(0, 0, 0);
-		owner->setColor(activeColor);
-		
-		actualEnergy = 1000;
-		actualTime = 0;
-		//set to -1 to make feeding infinitely active or inactive
-		inactiveDuration = 0;
-		activeDuration = -1;
-		
-		consumeEnergy = false;
-		dEnergyActive = 1;
-		dEnergyInactive = 0;
-	}
-	
-	void SbotFeeding::objectStep(double dt, PhysicalObject *po, World *w)
-	{
-		FeedableSbot *sbot = dynamic_cast<FeedableSbot *>(po);
-		if (sbot) {
-			if (actualTime < activeDuration || activeDuration == -1)
-			{
-				if ((actualEnergy > 0) || (dEnergyActive < 0))
-				{
-					sbot->dEnergy += dEnergyActive;
-					if ((consumeEnergy) && (dEnergyActive > 0))
-						actualEnergy -= dEnergyActive*dt;
-				}
-			}
-			else
-			{
-				if ((actualEnergy > 0) || (dEnergyInactive < 0))
-				{
-					sbot->dEnergy += dEnergyInactive;
-					if ((consumeEnergy) && (dEnergyInactive > 0))
-						actualEnergy -= dEnergyInactive*dt;
-				}
-			}
-		}
-	}
+namespace Enki {
+SbotFeeding::SbotFeeding(double r, Robot* owner) {
+    this->r = r;
+    this->owner = owner;
 
-	void SbotFeeding::finalize(double dt)
-	{
-		if ( activeDuration == -1 )
-		{ 
-			owner->setColor(activeColor);
-			return;
-		}
-		else if ( inactiveDuration == -1 )
-		{
-			owner->setColor(inactiveColor);
-			return; 
-		}
+    activeColor = Color(255, 0, 0);
+    inactiveColor = Color(0, 0, 0);
+    owner->setColor(activeColor);
 
-		actualTime += dt;
-		
-		double totalTime = activeDuration+inactiveDuration;
-		while (actualTime > totalTime)
-			actualTime -= totalTime;
-		
-		owner->setColor((actualTime < activeDuration) ? activeColor : inactiveColor);
-	}
+    actualEnergy = 1000;
+    actualTime = 0;
+    // set to -1 to make feeding infinitely active or inactive
+    inactiveDuration = 0;
+    activeDuration = -1;
 
-	SbotActiveObject::SbotActiveObject(double objectRadius, double actionRange) :
-		feeding(actionRange, this)
-	{
-		addLocalInteraction(&feeding);
-		
-		// we override physical settings setup because we only have objectRadius here
-		setCylindric(objectRadius, 1.9, -1);
-	}
-
-	SbotActiveSoundObject::SbotActiveSoundObject(double objectRadius, double actionRange) :
-		SbotActiveObject(objectRadius, actionRange),
-		ActiveSoundObject(this, actionRange, 25)
-	{
-		addLocalInteraction(&speaker);
-	}
-
-	void SbotActiveSoundObject::setSoundRange(double soundRange)
-	{
-		speaker.setSoundRange(soundRange);
-	}
+    consumeEnergy = false;
+    dEnergyActive = 1;
+    dEnergyInactive = 0;
 }
 
+void SbotFeeding::objectStep(double dt, PhysicalObject* po, World*) {
+    FeedableSbot* sbot = dynamic_cast<FeedableSbot*>(po);
+    if(sbot) {
+        if(actualTime < activeDuration || activeDuration == -1) {
+            if((actualEnergy > 0) || (dEnergyActive < 0)) {
+                sbot->dEnergy += dEnergyActive;
+                if((consumeEnergy) && (dEnergyActive > 0))
+                    actualEnergy -= dEnergyActive * dt;
+            }
+        } else {
+            if((actualEnergy > 0) || (dEnergyInactive < 0)) {
+                sbot->dEnergy += dEnergyInactive;
+                if((consumeEnergy) && (dEnergyInactive > 0))
+                    actualEnergy -= dEnergyInactive * dt;
+            }
+        }
+    }
+}
+
+void SbotFeeding::finalize(double dt) {
+    if(activeDuration == -1) {
+        owner->setColor(activeColor);
+        return;
+    } else if(inactiveDuration == -1) {
+        owner->setColor(inactiveColor);
+        return;
+    }
+
+    actualTime += dt;
+
+    double totalTime = activeDuration + inactiveDuration;
+    while(actualTime > totalTime)
+        actualTime -= totalTime;
+
+    owner->setColor((actualTime < activeDuration) ? activeColor : inactiveColor);
+}
+
+SbotActiveObject::SbotActiveObject(double objectRadius, double actionRange) : feeding(actionRange, this) {
+    addLocalInteraction(&feeding);
+
+    // we override physical settings setup because we only have objectRadius here
+    setCylindric(objectRadius, 1.9, -1);
+}
+
+SbotActiveSoundObject::SbotActiveSoundObject(double objectRadius, double actionRange)
+    : SbotActiveObject(objectRadius, actionRange), ActiveSoundObject(this, actionRange, 25) {
+    addLocalInteraction(&speaker);
+}
+
+void SbotActiveSoundObject::setSoundRange(double soundRange) {
+    speaker.setSoundRange(soundRange);
+}
+}  // namespace Enki

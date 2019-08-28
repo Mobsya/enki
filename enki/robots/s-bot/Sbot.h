@@ -7,8 +7,8 @@
     Copyright (C) 2006-2008 Laboratory of Robotics Systems, EPFL, Lausanne
     See AUTHORS for details
 
-    This program is free software; the authors of any publication 
-    arising from research using this software are asked to add the 
+    This program is free software; the authors of any publication
+    arising from research using this software are asked to add the
     following reference:
     Enki - a fast 2D robot simulator
     http://home.gna.org/enki
@@ -41,117 +41,119 @@
 #include <enki/robots/s-bot/SbotObject.h>
 
 /*!	\file Sbot.h
-	\brief Header of the Sbot robot
+    \brief Header of the Sbot robot
 */
 
-namespace Enki
-{
-	//! Interaction sound between all Sbots.
-	/*! The Sbots are supposed to emit sound at a sufficiently high intensity such as everyone hears it.
-		\ingroup interaction
-	*/
-	class SbotGlobalSound : public GlobalInteraction
-	{
-	protected:
-		// FIXME: ugly and not re-entrant, will be removed by ECS refactor
-		//! The world frequencies state, mask of all frequencies
-		static unsigned worldFrequenciesState;
-		
-	public:
-		//! The frequencies state of this robot, mask of all frequencies
-		unsigned frequenciesState;
-		
-	public:
-		//! Constructor
-		SbotGlobalSound (Robot *me) { this->owner = me; }
-		//! Initialisation, set world frequencies to zero. Called one time for each robot, which could be optimised.
-		virtual void init() { worldFrequenciesState = 0; }
-		//! Emit our frequencies to the world
-		virtual void step(double dt, World *w) { worldFrequenciesState |= frequenciesState; }
-		// FIXME: ugly and not re-entrant, will be removed by ECS refactor
-		//! Return state of the frequencies in the world
-		static unsigned getWorldFrequenciesState(void);
-	};
+namespace Enki {
+//! Interaction sound between all Sbots.
+/*! The Sbots are supposed to emit sound at a sufficiently high intensity such as everyone hears it.
+    \ingroup interaction
+*/
+class SbotGlobalSound : public GlobalInteraction {
+protected:
+    // FIXME: ugly and not re-entrant, will be removed by ECS refactor
+    //! The world frequencies state, mask of all frequencies
+    static unsigned worldFrequenciesState;
+
+public:
+    //! The frequencies state of this robot, mask of all frequencies
+    unsigned frequenciesState;
+
+public:
+    //! Constructor
+    SbotGlobalSound(Robot* me) {
+        this->owner = me;
+    }
+    //! Initialisation, set world frequencies to zero. Called one time for each robot, which could be optimised.
+    virtual void init() {
+        worldFrequenciesState = 0;
+    }
+    //! Emit our frequencies to the world
+    virtual void step(double, World*) {
+        worldFrequenciesState |= frequenciesState;
+    }
+    // FIXME: ugly and not re-entrant, will be removed by ECS refactor
+    //! Return state of the frequencies in the world
+    static unsigned getWorldFrequenciesState(void);
+};
 
 
-	//! Specific microphone for S-bots
-	/*! This microphone checks whether there are sounds coming from
-		sound-emitting objects, and also other s-bots
-		\ingroup interaction
-	*/
-	class SbotMicrophone : public FourWayMic
-	{
-	public:
-		//! Constructor
-		//! e.g.: FourWayMic(this, 0.5, 5, micStepModel, 20);
-		//! meaning: the 4 mics are 0.5 away from robot center, can
-		//! hear sounds up to ! 5 units away, uses a step model to
-		//! detect sounds and can distinguish 20 frequencies
-		SbotMicrophone(Robot *owner, double micDist, double range,
-					   MicrophoneResponseModel micModel, unsigned channels) :
-			FourWayMic(owner, micDist, range, micModel, channels) {}
-		//! Check for local interactions with other physical objects
-		void objectStep(double dt, PhysicalObject *po, World *w);
-	};
+//! Specific microphone for S-bots
+/*! This microphone checks whether there are sounds coming from
+    sound-emitting objects, and also other s-bots
+    \ingroup interaction
+*/
+class SbotMicrophone : public FourWayMic {
+public:
+    //! Constructor
+    //! e.g.: FourWayMic(this, 0.5, 5, micStepModel, 20);
+    //! meaning: the 4 mics are 0.5 away from robot center, can
+    //! hear sounds up to ! 5 units away, uses a step model to
+    //! detect sounds and can distinguish 20 frequencies
+    SbotMicrophone(Robot* owner, double micDist, double range, MicrophoneResponseModel micModel, unsigned channels)
+        : FourWayMic(owner, micDist, range, micModel, channels) {}
+    //! Check for local interactions with other physical objects
+    void objectStep(double dt, PhysicalObject* po, World* w);
+};
 
-	//! A very simplified model of the Sbot mobile robot.
-	/*! Only implement a subset of the camera
-		\ingroup robot
-	*/
-	class Sbot : public DifferentialWheeled
-	{
-	public:
-		//! The omnidirectional linear camera
-		OmniCam camera;
-		//! the sound interaction, based on global frequencies
-		SbotGlobalSound globalSound;
+//! A very simplified model of the Sbot mobile robot.
+/*! Only implement a subset of the camera
+    \ingroup robot
+*/
+class Sbot : public DifferentialWheeled {
+public:
+    //! The omnidirectional linear camera
+    OmniCam camera;
+    //! the sound interaction, based on global frequencies
+    SbotGlobalSound globalSound;
 
-	public:
-		//! Constructor
-		Sbot();
-		//! Destructor
-		~Sbot() {}
-	};
+public:
+    //! Constructor
+    Sbot();
+    //! Destructor
+    ~Sbot() {}
+};
 
 
-	//! An "improved" Sbot that can interact with SbotActiveObject.
-	/*! It is a hack for my experiments, should be removed one day.
-		\ingroup robot
-	*/
-	class FeedableSbot : public Sbot
-	{
-	public:
-		//! The actual energy of the Sbot
-		double energy;
-		//! The actual energy difference
-		double dEnergy;
-		//! The previous energy difference
-		double lastDEnergy;
+//! An "improved" Sbot that can interact with SbotActiveObject.
+/*! It is a hack for my experiments, should be removed one day.
+    \ingroup robot
+*/
+class FeedableSbot : public Sbot {
+public:
+    //! The actual energy of the Sbot
+    double energy;
+    //! The actual energy difference
+    double dEnergy;
+    //! The previous energy difference
+    double lastDEnergy;
 
-		//! Constructor
-		FeedableSbot() { energy=0; dEnergy=0; lastDEnergy=0; }
-		//! Call DifferentialWheeled::step and compute the new energy
-		virtual void controlStep(double dt) ;
-	};
+    //! Constructor
+    FeedableSbot() {
+        energy = 0;
+        dEnergy = 0;
+        lastDEnergy = 0;
+    }
+    //! Call DifferentialWheeled::step and compute the new energy
+    virtual void controlStep(double dt);
+};
 
 
-	//! This Sbot version has sound capabilities inherited from
-	//! ActiveSoundObject, as well as the feeding and usual capabilities
-	//! of an Sbot.
-	/*! \ingroup robot */
-	class SoundSbot : public FeedableSbot
-	{
-	public:
-		//! 4 microphones
-		SbotMicrophone mic;
-		//! 1 speaker
-		ActiveSoundSource speaker;
-		virtual void step(double dt) = 0;
+//! This Sbot version has sound capabilities inherited from
+//! ActiveSoundObject, as well as the feeding and usual capabilities
+//! of an Sbot.
+/*! \ingroup robot */
+class SoundSbot : public FeedableSbot {
+public:
+    //! 4 microphones
+    SbotMicrophone mic;
+    //! 1 speaker
+    ActiveSoundSource speaker;
+    virtual void step(double dt) = 0;
 
-	public:
-		//! Constructor, initialises microphones and speaker
-		SoundSbot();
-	};
-}
+public:
+    //! Constructor, initialises microphones and speaker
+    SoundSbot();
+};
+}  // namespace Enki
 #endif
-

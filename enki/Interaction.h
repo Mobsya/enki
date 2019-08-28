@@ -7,8 +7,8 @@
     Copyright (C) 2006-2008 Laboratory of Robotics Systems, EPFL, Lausanne
     See AUTHORS for details
 
-    This program is free software; the authors of any publication 
-    arising from research using this software are asked to add the 
+    This program is free software; the authors of any publication
+    arising from research using this software are asked to add the
     following reference:
     Enki - a fast 2D robot simulator
     http://home.gna.org/enki
@@ -35,81 +35,79 @@
 #define __ENKI_INTERACTION_H
 
 /*!	\file Interaction.h
-	\brief The interfaces for the interactions
+    \brief The interfaces for the interactions
 */
 
 /*!	\defgroup interaction Interaction classes
-	The locals and globals interactions.
+    The locals and globals interactions.
 */
 
-namespace Enki
-{
-	class PhysicalObject;
-	class Robot;
-	class World;
+namespace Enki {
+class PhysicalObject;
+class Robot;
+class World;
 
-	//! Interacts with another object or wall only up to a certain distance
-	/*! \ingroup core */
-	class LocalInteraction
-	{
-	protected:
-		//! Radius of the local interaction
-		double r;
+//! Interacts with another object or wall only up to a certain distance
+/*! \ingroup core */
+class LocalInteraction {
+protected:
+    //! Radius of the local interaction
+    double r;
 
-		//! Robots can access protected members me
-		friend class Robot;
-		//! The physical object that owns the interaction.
-		Robot *owner;
+    //! Robots can access protected members me
+    friend class Robot;
+    //! The physical object that owns the interaction.
+    Robot* owner;
 
-	public :
-		//! Constructor
-		LocalInteraction():r(0) {}
-		//! Constructor
-		LocalInteraction(double range, Robot* owner) : r(range), owner(owner) {}
-		//! Destructor
-		virtual ~LocalInteraction() { }
-		//! Init at each step
-		virtual void init(double dt, World* w) { }
-		//! Interact with object
-		/*!
-			\param dt time step
-			\param po object to interact with
-			\param w world where the interaction takes place
-		*/
-		virtual void objectStep(double dt, World* w, PhysicalObject *po) { }
-		//! Interact with walls
-		/*!
-			\param w world to which interact
-		*/
-		virtual void wallsStep(double dt, World* w) { }
-		//! Finalize at each step
-		virtual void finalize(double dt, World* w) { }
-		//! Return the range of the interaction
-		double getRange() const { return r; }
-	};
+public:
+    //! Constructor
+    LocalInteraction() : r(0) {}
+    //! Constructor
+    LocalInteraction(double range, Robot* owner) : r(range), owner(owner) {}
+    //! Destructor
+    virtual ~LocalInteraction() {}
+    //! Init at each step
+    virtual void init(double, World*) {}
+    //! Interact with object
+    /*!
+        \param dt time step
+        \param po object to interact with
+        \param w world where the interaction takes place
+    */
+    virtual void objectStep(double, World*, PhysicalObject*) {}
+    //! Interact with walls
+    /*!
+        \param w world to which interact
+    */
+    virtual void wallsStep(double, World*) {}
+    //! Finalize at each step
+    virtual void finalize(double, World*) {}
+    //! Return the range of the interaction
+    double getRange() const {
+        return r;
+    }
+};
 
-	//! Interacts with the whole world
-	/*! \ingroup core */
-	class GlobalInteraction
-	{
-	protected:
-		//! The physical object that owns the interaction.
-		Robot *owner;
+//! Interacts with the whole world
+/*! \ingroup core */
+class GlobalInteraction {
+protected:
+    //! The physical object that owns the interaction.
+    Robot* owner;
 
-	public :
-		//! Constructor
-		GlobalInteraction() {}
-		//! Constructor
-		GlobalInteraction(Robot* owner) : owner(owner) {}
-		//! Destructor
-		virtual ~GlobalInteraction() { }
-		//! Init at each step
-		virtual void init(double dt, World *w) { }
-		//! Interact with world
-		virtual void step(double dt, World *w) { }
-		//! Finalize at each step
-		virtual void finalize(double dt, World *w) { }
-	};
-}
+public:
+    //! Constructor
+    GlobalInteraction() {}
+    //! Constructor
+    GlobalInteraction(Robot* owner) : owner(owner) {}
+    //! Destructor
+    virtual ~GlobalInteraction() {}
+    //! Init at each step
+    virtual void init(double, World*) {}
+    //! Interact with world
+    virtual void step(double, World*) {}
+    //! Finalize at each step
+    virtual void finalize(double, World*) {}
+};
+}  // namespace Enki
 #endif
-
