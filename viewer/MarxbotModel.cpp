@@ -79,7 +79,7 @@ void MarxbotModel::draw(PhysicalObject* object) const {
 
     // wheels
     glPushMatrix();
-    glTranslatef(0, 0, GFloat(wheelRadius));
+    glTranslatef(0, 0, GLfloat(wheelRadius));
     glPushMatrix();
     glRotated((fmod(dw->rightOdometry, wheelCirc) * 360) / wheelCirc, 0, 1, 0);
     glCallList(lists[1]);

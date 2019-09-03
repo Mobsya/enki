@@ -223,7 +223,7 @@ void Thymio2Model::draw(PhysicalObject* object) const {
     glBindTexture(GL_TEXTURE_2D, textures[1]);
 
     glPushMatrix();
-    glTranslatef(0, 0, GFloat(wheelRadius));
+    glTranslatef(0, 0, GLfloat(wheelRadius));
     glRotated(180.f, 0, 0, 1);
     glPushMatrix();
     glTranslatef(0, 4, 0);
