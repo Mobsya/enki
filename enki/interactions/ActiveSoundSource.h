@@ -64,8 +64,8 @@ public:
     //! Destructor
     ~ActiveSoundSource();
     // Local interaction functions
-    virtual void init() {}
-    virtual void objectStep(double, PhysicalObject*, World*) {}
+    virtual void init(double, World*) override {}
+    virtual void objectStep(double, World*, PhysicalObject*) override {}
 
     //! Set the range of this sound interraction
     void setSoundRange(double range);

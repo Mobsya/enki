@@ -7,8 +7,8 @@
     Copyright (C) 2006-2008 Laboratory of Robotics Systems, EPFL, Lausanne
     See AUTHORS for details
 
-    This program is free software; the authors of any publication 
-    arising from research using this software are asked to add the 
+    This program is free software; the authors of any publication
+    arising from research using this software are asked to add the
     following reference:
     Enki - a fast 2D robot simulator
     http://home.gna.org/enki
@@ -39,64 +39,59 @@
 #include <enki/interactions/ActiveSoundSource.h>
 
 /*!	\file SbotObject.h
-	\brief Header of the Sbot Active Object
+    \brief Header of the Sbot Active Object
 */
-namespace Enki
-{
-	//! Feeding interaction gives or remove energy to nearby Sbots
-	/*! \ingroup interaction */
-	class SbotFeeding : public LocalInteraction
-	{
-	public:
-		//! The energy in stock
-		double actualEnergy;
-		//! The actual time
-		double actualTime;
-		//! The duration of active period
-		double activeDuration;
-		//! The duration of inactive period
-		double inactiveDuration;
-		//! The color of the object when active: (actualTime % (activeDuration+inactiveDuration) < activeDuration)
-		Color activeColor;
-		//! The color of the object when inactive: (actualTime % (activeDuration+inactiveDuration) >= activeDuration)
-		Color inactiveColor;
-		//! If true, energy given to the Sbots is removed from actualEnergy
-		bool consumeEnergy;
-		//! The energy difference per second when active
-		double dEnergyActive;
-		//! The energy difference per second when inactive
-		double dEnergyInactive;
+namespace Enki {
+//! Feeding interaction gives or remove energy to nearby Sbots
+/*! \ingroup interaction */
+class SbotFeeding : public LocalInteraction {
+public:
+    //! The energy in stock
+    double actualEnergy;
+    //! The actual time
+    double actualTime;
+    //! The duration of active period
+    double activeDuration;
+    //! The duration of inactive period
+    double inactiveDuration;
+    //! The color of the object when active: (actualTime % (activeDuration+inactiveDuration) < activeDuration)
+    Color activeColor;
+    //! The color of the object when inactive: (actualTime % (activeDuration+inactiveDuration) >= activeDuration)
+    Color inactiveColor;
+    //! If true, energy given to the Sbots is removed from actualEnergy
+    bool consumeEnergy;
+    //! The energy difference per second when active
+    double dEnergyActive;
+    //! The energy difference per second when inactive
+    double dEnergyInactive;
 
-	public :
-		//! Constructor, r is the radius of the interaction
-		SbotFeeding(double r, Robot *owner);
-		virtual void objectStep (double dt, PhysicalObject *po, World *w);
-		virtual void finalize(double dt);
-	};
+public:
+    //! Constructor, r is the radius of the interaction
+    SbotFeeding(double r, Robot* owner);
+    virtual void objectStep(double dt, World*, PhysicalObject* po) override;
+    virtual void finalize(double dt, World*) override;
+};
 
-	//! SbotActiveObject give or remove energy to nearby Sbots through an SbotFeeding interaction
-	/*! \ingroup robot */
-	class SbotActiveObject : public Robot
-	{
-	public:
-		//! The interaction
-		SbotFeeding feeding;
-		
-	public:
-		//! Constructor
-		SbotActiveObject(double objectRadius, double actionRange);
-	};
+//! SbotActiveObject give or remove energy to nearby Sbots through an SbotFeeding interaction
+/*! \ingroup robot */
+class SbotActiveObject : public Robot {
+public:
+    //! The interaction
+    SbotFeeding feeding;
 
-	//! SbotActiveSoundObject give or remove energy to nearby Sbots through an SbotFeeding interaction
-	/*! \ingroup robot */
-	class SbotActiveSoundObject : public SbotActiveObject, public ActiveSoundObject
-	{
-	public:
-		//! Constructor
-		SbotActiveSoundObject(double objectRadius, double actionRange);
-		//! Set the range of the sound interaction
-		void setSoundRange(double soundRange);
-	};
-}
+public:
+    //! Constructor
+    SbotActiveObject(double objectRadius, double actionRange);
+};
+
+//! SbotActiveSoundObject give or remove energy to nearby Sbots through an SbotFeeding interaction
+/*! \ingroup robot */
+class SbotActiveSoundObject : public SbotActiveObject, public ActiveSoundObject {
+public:
+    //! Constructor
+    SbotActiveSoundObject(double objectRadius, double actionRange);
+    //! Set the range of the sound interaction
+    void setSoundRange(double soundRange);
+};
+}  // namespace Enki
 #endif
-

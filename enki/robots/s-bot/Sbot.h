@@ -65,11 +65,11 @@ public:
         this->owner = me;
     }
     //! Initialisation, set world frequencies to zero. Called one time for each robot, which could be optimised.
-    virtual void init() {
+    virtual void init(double, World*) override {
         worldFrequenciesState = 0;
     }
     //! Emit our frequencies to the world
-    virtual void step(double, World*) {
+    virtual void step(double, World*) override {
         worldFrequenciesState |= frequenciesState;
     }
     // FIXME: ugly and not re-entrant, will be removed by ECS refactor
@@ -93,7 +93,7 @@ public:
     SbotMicrophone(Robot* owner, double micDist, double range, MicrophoneResponseModel micModel, unsigned channels)
         : FourWayMic(owner, micDist, range, micModel, channels) {}
     //! Check for local interactions with other physical objects
-    void objectStep(double dt, PhysicalObject* po, World* w);
+    void objectStep(double, World*, PhysicalObject*) override;
 };
 
 //! A very simplified model of the Sbot mobile robot.

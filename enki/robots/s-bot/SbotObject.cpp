@@ -60,7 +60,7 @@ SbotFeeding::SbotFeeding(double r, Robot* owner) {
     dEnergyInactive = 0;
 }
 
-void SbotFeeding::objectStep(double dt, PhysicalObject* po, World*) {
+void SbotFeeding::objectStep(double dt, World*, PhysicalObject* po) {
     FeedableSbot* sbot = dynamic_cast<FeedableSbot*>(po);
     if(sbot) {
         if(actualTime < activeDuration || activeDuration == -1) {
@@ -79,7 +79,7 @@ void SbotFeeding::objectStep(double dt, PhysicalObject* po, World*) {
     }
 }
 
-void SbotFeeding::finalize(double dt) {
+void SbotFeeding::finalize(double dt, World*) {
     if(activeDuration == -1) {
         owner->setColor(activeColor);
         return;

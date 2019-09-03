@@ -7,8 +7,8 @@
     Copyright (C) 2006-2008 Laboratory of Robotics Systems, EPFL, Lausanne
     See AUTHORS for details
 
-    This program is free software; the authors of any publication 
-    arising from research using this software are asked to add the 
+    This program is free software; the authors of any publication
+    arising from research using this software are asked to add the
     following reference:
     Enki - a fast 2D robot simulator
     http://home.gna.org/enki
@@ -44,96 +44,91 @@
   \brief Header of the generic infrared sensor
 */
 
-namespace Enki
-{
-	//! A function for manipulating acquired sound, normally to model saturation, distance decreasing or frequency response
-	typedef double (*MicrophoneResponseModel)(double, double);
+namespace Enki {
+//! A function for manipulating acquired sound, normally to model saturation, distance decreasing or frequency response
+typedef double (*MicrophoneResponseModel)(double, double);
 
-	//! A generic sound sensor/microphone
-	/*! \ingroup interaction */
-	class Microphone : public LocalInteraction
-	{
-	protected:
-		//! Robot/object with the microphone
-		PhysicalObject *owner;
-		//! Absolute position in the world, updated on init()
-		Vector micAbsPos;
-		//! Relative position of mic on object
-		Vector micRelPos;
-		//! Microphone frequency response model
-		MicrophoneResponseModel micModel;
-		//! Actual detection range
-		double range;
-		//! No of frequency channels distinguished in input
-		unsigned noOfChannels;
-		//! microphone input signal (array of size noOfChannels)
-		double* acquiredSound;
-		
-	public: 
-		//! Constructor
-		//! e.g.: Microphone(this, Vector(0.5, 0.5), 5, micStepModel, 20);
-		//! meaning: the mic is (0.5, 0.5) away from robot center, can hear sounds up to
-		//! 5 units away, uses a step model to detect sounds and can distinguish 20 frequencies
-		Microphone(Robot *owner, Vector micRelPos, double range, 
-				   MicrophoneResponseModel micModel, unsigned channels);
-		//! Destructor
-		~Microphone(void);
-		//! Reset distance values, called every w->step()
-		void init();
-		//! Check for local interactions with other physical objects
-		virtual void objectStep(double dt, PhysicalObject *po, World *w);
-		//! Reset sound buffer to 0 after one time-step in experiment
-		void resetSound(void);
-		//! Return frequencies of input sound
-		double* getAcquiredSound(void);
-		//! Find frequency with maximum intensity
-		void getMaxChannel(double *intensity, int *channel);
-		//! Get absolute position of microphone
-		Vector getMicAbsPos();
-	};
+//! A generic sound sensor/microphone
+/*! \ingroup interaction */
+class Microphone : public LocalInteraction {
+protected:
+    //! Robot/object with the microphone
+    PhysicalObject* owner;
+    //! Absolute position in the world, updated on init()
+    Vector micAbsPos;
+    //! Relative position of mic on object
+    Vector micRelPos;
+    //! Microphone frequency response model
+    MicrophoneResponseModel micModel;
+    //! Actual detection range
+    double range;
+    //! No of frequency channels distinguished in input
+    unsigned noOfChannels;
+    //! microphone input signal (array of size noOfChannels)
+    double* acquiredSound;
 
-	//! A generic sound sensor/microphone
-	/*! \ingroup interaction */
-	class FourWayMic : public LocalInteraction
-	{
-	protected:
-		//! Robot/object with the microphone
-		PhysicalObject *owner;
-		//! Absolute position in the world, updated on init()
-		Vector allMicAbsPos[4];
-		//! Distance of the mics from centre of object
-		double micDist;
-		//! Microphone frequency response model
-		MicrophoneResponseModel micModel;
-		//! Actual detection range
-		double range;
-		//! No of frequency channels distinguished in input
-		unsigned noOfChannels;
-		//! Microphone input signal (array of size noOfChannels for 4 mics)
-		double* acquiredSound[4];
-		
-	public: 
-		//! Constructor
-		//! e.g.: FourWayMic(this, 0.5, 5, micStepModel, 20);
-		//! meaning: each of the 4 mics is 0.5 away from robot center, can hear sounds up to
-		//! 5 units away, uses a step model to detect sounds and can distinguish 20 frequencies
-		FourWayMic(Robot *owner, double micDist, double range, 
-				   MicrophoneResponseModel micModel, unsigned channels);
-		//! Destructor
-		~FourWayMic(void);
-		//! Reset distance values, called every w->step()
-		void init();
-		//! Check for local interactions with other physical objects
-		virtual void objectStep(double dt, PhysicalObject *po, World *w);
-		//! Reset sound buffer to 0 after one time-step in experiment
-		void resetSound(void);
-		//! Return frequencies of input sound
-		double* getAcquiredSound(unsigned micNo);
-		//! Find frequency with maximum intensity
-		void getMaxChannel(unsigned micNo, double *intensity, int *channel);
-		//! Get absolute position of microphone
-		Vector getMicAbsPos(unsigned micNo);
-	};
-}
+public:
+    //! Constructor
+    //! e.g.: Microphone(this, Vector(0.5, 0.5), 5, micStepModel, 20);
+    //! meaning: the mic is (0.5, 0.5) away from robot center, can hear sounds up to
+    //! 5 units away, uses a step model to detect sounds and can distinguish 20 frequencies
+    Microphone(Robot* owner, Vector micRelPos, double range, MicrophoneResponseModel micModel, unsigned channels);
+    //! Destructor
+    ~Microphone(void);
+    //! Reset distance values, called every w->step()
+    void init(double, World*) override;
+    //! Check for local interactions with other physical objects
+    virtual void objectStep(double, World*, PhysicalObject* po) override;
+    //! Reset sound buffer to 0 after one time-step in experiment
+    void resetSound(void);
+    //! Return frequencies of input sound
+    double* getAcquiredSound(void);
+    //! Find frequency with maximum intensity
+    void getMaxChannel(double* intensity, int* channel);
+    //! Get absolute position of microphone
+    Vector getMicAbsPos();
+};
+
+//! A generic sound sensor/microphone
+/*! \ingroup interaction */
+class FourWayMic : public LocalInteraction {
+protected:
+    //! Robot/object with the microphone
+    PhysicalObject* owner;
+    //! Absolute position in the world, updated on init()
+    Vector allMicAbsPos[4];
+    //! Distance of the mics from centre of object
+    double micDist;
+    //! Microphone frequency response model
+    MicrophoneResponseModel micModel;
+    //! Actual detection range
+    double range;
+    //! No of frequency channels distinguished in input
+    unsigned noOfChannels;
+    //! Microphone input signal (array of size noOfChannels for 4 mics)
+    double* acquiredSound[4];
+
+public:
+    //! Constructor
+    //! e.g.: FourWayMic(this, 0.5, 5, micStepModel, 20);
+    //! meaning: each of the 4 mics is 0.5 away from robot center, can hear sounds up to
+    //! 5 units away, uses a step model to detect sounds and can distinguish 20 frequencies
+    FourWayMic(Robot* owner, double micDist, double range, MicrophoneResponseModel micModel, unsigned channels);
+    //! Destructor
+    ~FourWayMic(void);
+    //! Reset distance values, called every w->step()
+    virtual void init(double, World*) override;
+    //! Check for local interactions with other physical objects
+    virtual void objectStep(double, World*, PhysicalObject* po) override;
+    //! Reset sound buffer to 0 after one time-step in experiment
+    void resetSound(void);
+    //! Return frequencies of input sound
+    double* getAcquiredSound(unsigned micNo);
+    //! Find frequency with maximum intensity
+    void getMaxChannel(unsigned micNo, double* intensity, int* channel);
+    //! Get absolute position of microphone
+    Vector getMicAbsPos(unsigned micNo);
+};
+}  // namespace Enki
 
 #endif

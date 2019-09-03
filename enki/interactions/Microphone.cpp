@@ -62,13 +62,13 @@ Microphone::~Microphone(void) {
     delete[] acquiredSound;
 }
 
-void Microphone::init() {
+void Microphone::init(double, World*) {
     Matrix22 rot(owner->angle);
     micAbsPos = owner->pos + rot * micRelPos;
     resetSound();
 }
 
-void Microphone::objectStep(double, PhysicalObject* po, World*) {
+void Microphone::objectStep(double, World*, PhysicalObject* po) {
     // Current distance between the interacting physical object and
     // the sensor (used later in sound filtering)
     double current_dist = (po->pos - micAbsPos).norm();
@@ -154,7 +154,7 @@ FourWayMic::~FourWayMic(void) {
         delete[] acquiredSound[i];
 }
 
-void FourWayMic::init() {
+void FourWayMic::init(double, World*) {
     Matrix22 rot(owner->angle);
     allMicAbsPos[0] = owner->pos + rot * Vector(micDist, micDist);
     allMicAbsPos[1] = owner->pos + rot * Vector(micDist, -micDist);
@@ -163,7 +163,7 @@ void FourWayMic::init() {
     resetSound();
 }
 
-void FourWayMic::objectStep(double, PhysicalObject* po, World*) {
+void FourWayMic::objectStep(double, World*, PhysicalObject* po) {
     // Get current object sound
     double* currentSound = new double[noOfChannels];
     assert(currentSound);

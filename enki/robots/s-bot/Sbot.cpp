@@ -54,7 +54,7 @@ double MicrophonePseudoRealResponseModel(double signal, double distance) {
     return Lp;
 }
 
-void SbotMicrophone::objectStep(double, PhysicalObject* po, World*) {
+void SbotMicrophone::objectStep(double, World*, PhysicalObject* po) {
     // Get current object sound
     double* currentSound = new double[noOfChannels];
     assert(currentSound);
