@@ -733,9 +733,9 @@ void ViewerWidget::sceneCompletedHook() {
 void ViewerWidget::initializeGL() {
     glClearColor(world->color.r(), world->color.g(), world->color.b(), 1.0);
 
-    float LightAmbient[] = {0.6, 0.6, 0.6, 1};
-    float LightDiffuse[] = {1.2, 1.2, 1.2, 1};
-    float defaultColor[] = {0.5, 0.5, 0.5, 1};
+    float LightAmbient[] = {0.6f, 0.6f, 0.6f, 1.f};
+    float LightDiffuse[] = {1.2f, 1.2f, 1.2f, 1.f};
+    float defaultColor[] = {0.5f, 0.5f, 0.5f, 1.f};
     glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmbient);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDiffuse);
     glEnable(GL_LIGHT0);
@@ -1070,7 +1070,7 @@ void ViewerWidget::computeInfoMessageAreaSize() {
         messageListWidth = std::max(messageListWidth, fontMetrics.width(it->message));
     const int lineSpacing(fontMetrics.lineSpacing() + 3);
     messageListWidth += 20;
-    messageListHeight = messageList.size() * lineSpacing;
+    messageListHeight = int(messageList.size()) * lineSpacing;
     if(messageListHeight)
         messageListHeight += 20;
 }

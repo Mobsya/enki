@@ -77,7 +77,7 @@ void ActiveSoundSource::realisticSetSound(unsigned channel, double signal) {
     double variance = 1;
 
     if(channel < noOfChannels) {
-        int c = (int)channel + round(gaussianRand(0, variance));
+        int c = int(channel + round(gaussianRand(0, variance)));
         if(c < 0)
             c = 0;
         if(unsigned(c) >= noOfChannels)

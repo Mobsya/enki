@@ -196,8 +196,8 @@ void CircularCam::drawTexturedLine(const Point& p0, const Point& p1, const Textu
     const double alignedEndAngle = beginAperture + endIndex * dAngle;
 
     const double beginPixel =
-        round(interpolateLinear(beginAperture, endAperture, alignedBeginAngle, 0, pixelCount - 1));
-    const double endPixel = round(interpolateLinear(beginAperture, endAperture, alignedEndAngle, 0, pixelCount - 1));
+        round(interpolateLinear(beginAperture, endAperture, alignedBeginAngle, 0, double(pixelCount - 1)));
+    const double endPixel = round(interpolateLinear(beginAperture, endAperture, alignedEndAngle, 0, double(pixelCount - 1)));
 
     // Optimization stuff
     const double x10 = p1c.x - p0c.x;
@@ -284,7 +284,7 @@ void CircularCam::wallsStep(double, World* w) {
 
         case World::WALLS_CIRCULAR: {
             const double r(w->r);
-            const int segmentCount((r * 2. * M_PI) / 10.);
+            const int segmentCount(int((r * 2. * M_PI) / 10.));
             for(int i = 0; i < segmentCount; ++i) {
                 const double angStart(((double)i * 2. * M_PI) / (double)segmentCount);
                 const double angEnd(((double)(i + 1) * 2. * M_PI) / (double)segmentCount);

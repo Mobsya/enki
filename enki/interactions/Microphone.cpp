@@ -117,7 +117,7 @@ void Microphone::resetSound() {
 void Microphone::getMaxChannel(double* intensity, int* channel) {
     *intensity = 0;
     *channel = -1;
-    for(size_t i = 0; i < noOfChannels; i++) {
+    for(unsigned i = 0; i < noOfChannels; i++) {
         if(acquiredSound[i] > *intensity) {
             *intensity = acquiredSound[i];
             *channel = i;
@@ -180,7 +180,7 @@ void FourWayMic::objectStep(double, PhysicalObject* po, World*) {
     double current_dist;
     double min_dist = 0xFFFFFFFF;
     unsigned min_dist_micNo = 0;
-    for(size_t i = 0; i < 4; i++) {
+    for(unsigned i = 0; i < 4; i++) {
         current_dist = (po->pos - allMicAbsPos[i]).norm();
         // find mic closest to interacting physical object
         if(current_dist < min_dist) {
@@ -217,7 +217,7 @@ void FourWayMic::resetSound() {
 void FourWayMic::getMaxChannel(unsigned micNo, double* intensity, int* channel) {
     *intensity = 0;
     *channel = -1;
-    for(size_t i = 0; i < noOfChannels; i++) {
+    for(unsigned i = 0; i < noOfChannels; i++) {
         if(acquiredSound[micNo][i] > *intensity) {
             *intensity = acquiredSound[micNo][i];
             *channel = i;

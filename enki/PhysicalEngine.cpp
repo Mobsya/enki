@@ -670,11 +670,11 @@ Color World::getGroundColor(const Point& p) const {
         return color;
     int texX, texY;
     if(wallsType == WALLS_SQUARE) {
-        texX = p.x * groundTexture.width / w;
-        texY = p.y * groundTexture.height / h;
+        texX = int(p.x * groundTexture.width / w);
+        texY = int(p.y * groundTexture.height / h);
     } else if(wallsType == WALLS_CIRCULAR) {
-        texX = (p.x + r) * groundTexture.width / (2 * r);
-        texY = (p.y + r) * groundTexture.height / (2 * r);
+        texX = int((p.x + r) * groundTexture.width / (2 * r));
+        texY = int((p.y + r) * groundTexture.height / (2 * r));
     } else
         abort();
 

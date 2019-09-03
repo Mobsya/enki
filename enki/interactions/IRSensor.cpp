@@ -296,7 +296,7 @@ double IRSensor::distanceToPolygon(double rayAngle, const Polygon& p) const {
     Point absEnd = absPos + Vector(cos(rayAngle), sin(rayAngle)) * range;
     Segment ray(absPos.x, absPos.y, absEnd.x, absEnd.y);
 
-    const int n = p.size();    // number of points in the polygon
+    const int n = int(p.size());    // number of points in the polygon
     double tE = 0.0;           // the maximum entering segment parameter
     double tL = 1.0;           // the minimum leaving segment parameter
     double t, N, D;            // intersect parameter t = N / D

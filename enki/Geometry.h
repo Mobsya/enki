@@ -35,8 +35,9 @@
 #define __ENKI_GEOMETRY_H
 
 #ifdef WIN32
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
-#include <math.h>
+#endif
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif

@@ -59,10 +59,10 @@ namespace Enki
 
 	uint32_t Color::toARGB(Color color)
 	{
-		const uint8_t r = (255*color.r());
-		const uint8_t g = (255*color.g());
-		const uint8_t b = (255*color.b());
-		const uint8_t a = (255*color.a());
+		const uint8_t r = uint8_t(255*color.r());
+		const uint8_t g = uint8_t(255*color.g());
+		const uint8_t b = uint8_t(255*color.b());
+		const uint8_t a = uint8_t(255*color.a());
 		return ((a<<24)|(r<<16)|(g<<8)|(b<<0));
 	}
 

@@ -80,7 +80,7 @@ void SbotMicrophone::objectStep(double, PhysicalObject* po, World*) {
     double current_dist;
     double min_dist = 0xFFFFFFFF;
     unsigned min_dist_micNo = 0;
-    for(size_t i = 0; i < 4; i++) {
+    for(unsigned i = 0; i < 4; i++) {
         current_dist = (po->pos - allMicAbsPos[i]).norm();
         // find mic closest to interacting physical object
         if(current_dist < min_dist) {
