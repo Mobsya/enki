@@ -33,7 +33,7 @@
 
 #include "Thymio2Model.h"
 #include "objects/Objects.h"
-#include <GL/gl.h>
+#include "opengl.h"
 
 //! Asserts a dynamic cast.	Similar to the one in boost/cast.hpp
 template<typename Derived, typename Base>

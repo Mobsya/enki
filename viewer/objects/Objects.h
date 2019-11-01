@@ -36,7 +36,7 @@
 #ifndef __ENKI_VIEWER_OBJECTS_H
 #define __ENKI_VIEWER_OBJECTS_H
 
-#include <QtOpenGL>
+#include "opengl.h"
 
 namespace Enki
 {

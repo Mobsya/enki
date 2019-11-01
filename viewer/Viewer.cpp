@@ -39,7 +39,7 @@
 #include <enki/robots/marxbot/Marxbot.h>
 #include "Thymio2Model.h"
 #include <enki/robots/thymio2/Thymio2.h>
-#include <GL/gl.h>
+#include "opengl.h"
 
 #ifdef Q_OS_WIN
 	#ifndef GL_BGRA

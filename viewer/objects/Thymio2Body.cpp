@@ -34,8 +34,8 @@
 
 // Thymio2 body
 
-#include <QtOpenGL>
-#include <GL/gl.h>
+#include "opengl.h"
+#include "opengl.h"
 #include <iostream>
 
 namespace Enki

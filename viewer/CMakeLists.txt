@@ -23,7 +23,7 @@ add_library(enkiviewer
 set_target_properties(enkiviewer PROPERTIES VERSION ${LIB_VERSION_STRING}
 									SOVERSION ${LIB_VERSION_MAJOR})
 
-target_include_directories(enkiviewer PUBLIC ${PROJECT_SOURCE_DIR})
+target_include_directories(enkiviewer PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/enki)
 target_link_libraries(enkiviewer LINK_PUBLIC enki Qt5::Widgets Qt5::OpenGL ${OPENGL_LIBRARIES})
 
 set(ENKI_VIEWER_HDR

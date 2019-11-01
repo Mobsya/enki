@@ -34,8 +34,8 @@
 
 // Marxbot base
 
-#include <QtOpenGL>
-#include <GL/gl.h>
+#include "opengl.h"
+#include "opengl.h"
 
 namespace Enki
 {

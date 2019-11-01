@@ -34,8 +34,8 @@
 
 // E-puck object file
 
-#include <QtOpenGL>
-#include <GL/gl.h>
+#include "opengl.h"
+#include "opengl.h"
 
 #define BYTE unsigned char
 
