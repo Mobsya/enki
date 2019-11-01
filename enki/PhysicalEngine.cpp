@@ -37,6 +37,7 @@
 #include <assert.h>
 #include <algorithm>
 #include <limits>
+#include <GL/gl.h>
 
 // _________________________________
 //

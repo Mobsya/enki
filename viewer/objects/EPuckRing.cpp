@@ -35,6 +35,8 @@
 // E-puck object file
 
 #include <QtOpenGL>
+#include <GL/gl.h>
+
 #define BYTE unsigned char
 
 namespace Enki

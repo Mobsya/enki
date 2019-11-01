@@ -35,6 +35,7 @@
 // Marxbot wheel
 
 #include <QtOpenGL>
+#include <GL/gl.h>
 
 namespace Enki
 {
